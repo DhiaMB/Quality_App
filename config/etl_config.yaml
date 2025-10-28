@@ -1,0 +1,21 @@
+transformation:
+  code_mapping:
+    manque cable: manque câble
+    manque cable wire: manque câble
+    manque port cable wire: manque câble
+    point cassee: point cassé
+    point saute: point sauté
+  target_columns:
+  - part_number
+  - serial_number
+  - date
+  - shift
+  - disposition
+  - code
+  - code_description
+  - category
+  - type
+  - machine_no
+  - operator_no
+  - defect_comment
+  - repair_comment

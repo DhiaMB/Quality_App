@@ -1,0 +1,26 @@
+# Source LPBS Database (SQL Server simulated as PostgreSQL)
+source_db:
+  host: "localhost"
+  port: 5432
+  dbname: "lpb_source"
+  user: "postgres"
+  password: "Mamajtm123"
+  schema: "public"
+
+# Target Application Database
+target_db:
+  host: "localhost"
+  port: 5432
+  dbname: "quality_analytics"
+  user: "postgres"
+  password: "Mamajtm123"
+  schema: "quality"
+
+# ETL Database
+etl_db:
+  host: "localhost"
+  port: 5432
+  dbname: "quality_analytics"
+  user: "postgres"
+  password: "Mamajtm123"
+  schema: "etl_metadata"

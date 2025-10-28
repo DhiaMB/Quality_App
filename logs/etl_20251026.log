@@ -1,0 +1,778 @@
+2025-10-26 20:09:38,506 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:09:38,507 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:09:38,507 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:09:38,570 - quality_etl - WARNING - Could not get last extraction time: (psycopg2.errors.UndefinedTable) ERREUR:  la relation « etl_metadata.etl_runs » n'existe pas
+LINE 3:                 FROM etl_metadata.etl_runs 
+                             ^
+
+[SQL: 
+                SELECT last_successful_extraction 
+                FROM etl_metadata.etl_runs 
+                WHERE job_name = 'quality_data_extraction' 
+                AND status = 'COMPLETED'
+                ORDER BY completed_at DESC 
+                LIMIT 1
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-10-26 20:09:38,570 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:10:06,085 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:10:06,085 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:10:06,085 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:10:06,250 - quality_etl - WARNING - Could not get last extraction time: (psycopg2.errors.UndefinedTable) ERREUR:  la relation « etl_metadata.etl_runs » n'existe pas
+LINE 3:                 FROM etl_metadata.etl_runs 
+                             ^
+
+[SQL: 
+                SELECT last_successful_extraction 
+                FROM etl_metadata.etl_runs 
+                WHERE job_name = 'quality_data_extraction' 
+                AND status = 'COMPLETED'
+                ORDER BY completed_at DESC 
+                LIMIT 1
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-10-26 20:10:06,251 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:21:56,389 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:21:56,389 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:21:56,389 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:21:56,557 - quality_etl - WARNING - Could not get last extraction time: (psycopg2.errors.UndefinedTable) ERREUR:  la relation « etl_metadata.etl_runs » n'existe pas
+LINE 3:                 FROM etl_metadata.etl_runs 
+                             ^
+
+[SQL: 
+                SELECT last_successful_extraction 
+                FROM etl_metadata.etl_runs 
+                WHERE job_name = 'quality_data_extraction' 
+                AND status = 'COMPLETED'
+                ORDER BY completed_at DESC 
+                LIMIT 1
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-10-26 20:21:56,557 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:21:56,667 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:21:56,667 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:22:58,374 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:22:58,375 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:22:58,375 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:22:58,438 - quality_etl - WARNING - Could not get last extraction time: (psycopg2.errors.UndefinedTable) ERREUR:  la relation « etl_metadata.etl_runs » n'existe pas
+LINE 3:                 FROM etl_metadata.etl_runs 
+                             ^
+
+[SQL: 
+                SELECT last_successful_extraction 
+                FROM etl_metadata.etl_runs 
+                WHERE job_name = 'quality_data_extraction' 
+                AND status = 'COMPLETED'
+                ORDER BY completed_at DESC 
+                LIMIT 1
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-10-26 20:22:58,439 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:22:58,527 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:22:58,527 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:28:07,281 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:28:07,281 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:28:07,281 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:28:07,347 - quality_etl - WARNING - Could not get last extraction time: (psycopg2.errors.UndefinedTable) ERREUR:  la relation « etl_metadata.etl_runs » n'existe pas
+LINE 3:                 FROM etl_metadata.etl_runs 
+                             ^
+
+[SQL: 
+                SELECT last_successful_extraction 
+                FROM etl_metadata.etl_runs 
+                WHERE job_name = 'quality_data_extraction' 
+                AND status = 'COMPLETED'
+                ORDER BY completed_at DESC 
+                LIMIT 1
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-10-26 20:28:07,347 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:28:07,437 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:28:07,437 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:28:07,462 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:28:07,521 - quality_etl - ERROR - Failed to load to clean table: List argument must consist only of dictionaries
+2025-10-26 20:28:07,522 - quality_etl - ERROR - Load operation failed: List argument must consist only of dictionaries
+2025-10-26 20:28:07,522 - quality_etl - ERROR - Failed to update ETL metadata: List argument must consist only of dictionaries
+2025-10-26 20:31:14,080 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:31:14,080 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:31:14,081 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:31:14,146 - quality_etl - WARNING - Could not get last extraction time: (psycopg2.errors.UndefinedTable) ERREUR:  la relation « etl_metadata.etl_runs » n'existe pas
+LINE 3:                 FROM etl_metadata.etl_runs 
+                             ^
+
+[SQL: 
+                SELECT last_successful_extraction 
+                FROM etl_metadata.etl_runs 
+                WHERE job_name = 'quality_data_extraction' 
+                AND status = 'COMPLETED'
+                ORDER BY completed_at DESC 
+                LIMIT 1
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-10-26 20:31:14,147 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:31:14,228 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:31:14,228 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:31:14,235 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:31:14,557 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:31:14,557 - quality_etl - ERROR - Failed to update ETL metadata: List argument must consist only of dictionaries
+2025-10-26 20:31:14,558 - quality_etl - ERROR - Failed to mark staging as processed: List argument must consist only of dictionaries
+2025-10-26 20:38:30,361 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:38:30,362 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:38:30,362 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:38:30,424 - quality_etl - WARNING - Could not get last extraction time: (psycopg2.errors.UndefinedTable) ERREUR:  la relation « etl_metadata.etl_runs » n'existe pas
+LINE 3:                 FROM etl_metadata.etl_runs 
+                             ^
+
+[SQL: 
+                SELECT last_successful_extraction 
+                FROM etl_metadata.etl_runs 
+                WHERE job_name = 'quality_data_extraction' 
+                AND status = 'COMPLETED'
+                ORDER BY completed_at DESC 
+                LIMIT 1
+            ]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-10-26 20:38:30,424 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:38:30,513 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:38:30,513 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:38:30,522 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:38:30,764 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:38:30,766 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:38:30,774 - quality_etl - INFO - Marked staging records with batch_id 20251026_203830 as processed
+2025-10-26 20:38:30,775 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:43:57,512 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:43:57,513 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:43:57,513 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:43:57,513 - quality_etl - WARNING - Could not get last extraction time: name 'get_target_engine' is not defined
+2025-10-26 20:43:57,513 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:43:57,605 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:43:57,605 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:43:57,617 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:43:57,852 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:43:57,854 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:43:57,856 - quality_etl - INFO - Marked staging records with batch_id 20251026_204357 as processed
+2025-10-26 20:43:57,857 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:45:39,752 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:45:39,752 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:45:39,752 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:45:39,930 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:45:40,117 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:45:40,118 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:45:40,126 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:45:40,348 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:45:40,351 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:45:40,354 - quality_etl - INFO - Marked staging records with batch_id 20251026_204539 as processed
+2025-10-26 20:45:40,354 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:50:02,420 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:50:02,421 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:50:02,421 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:50:02,501 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:50:02,696 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:50:02,696 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:50:02,706 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:50:02,924 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:50:02,926 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:50:02,929 - quality_etl - INFO - Marked staging records with batch_id 20251026_205002 as processed
+2025-10-26 20:50:02,929 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:50:03,383 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:50:03,384 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:50:03,385 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:50:03,456 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:50:03,534 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:50:03,534 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:50:03,542 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:50:03,881 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:50:03,885 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:50:03,888 - quality_etl - INFO - Marked staging records with batch_id 20251026_205003 as processed
+2025-10-26 20:50:03,888 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:50:11,688 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:50:11,689 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:50:11,689 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:50:11,761 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:50:11,949 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:50:11,950 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:50:11,957 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:50:12,173 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:50:12,176 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:50:12,178 - quality_etl - INFO - Marked staging records with batch_id 20251026_205011 as processed
+2025-10-26 20:50:12,178 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:50:17,526 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:50:17,526 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:50:17,527 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:50:17,596 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:50:17,677 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:50:17,677 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:50:17,685 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:50:17,923 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:50:17,924 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:50:17,927 - quality_etl - INFO - Marked staging records with batch_id 20251026_205017 as processed
+2025-10-26 20:50:17,927 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:59:17,876 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:59:17,876 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:59:17,877 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:59:17,946 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:59:18,029 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:59:18,030 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:59:18,037 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:59:18,299 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:59:18,301 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:59:18,304 - quality_etl - INFO - Marked staging records with batch_id 20251026_205917 as processed
+2025-10-26 20:59:18,304 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 20:59:38,441 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 20:59:38,441 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 20:59:38,441 - quality_etl - INFO - Starting database extraction
+2025-10-26 20:59:38,510 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 20:59:38,588 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 20:59:38,589 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 20:59:38,595 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 20:59:38,822 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 20:59:38,824 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 20:59:38,826 - quality_etl - INFO - Marked staging records with batch_id 20251026_205938 as processed
+2025-10-26 20:59:38,826 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:08:38,921 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:08:38,922 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:08:38,922 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:08:38,996 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:08:39,060 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:08:39,061 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:08:39,062 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:08:39,078 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:08:39,078 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:08:39,079 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:08:39,079 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:08:39,080 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:08:39,080 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:08:39,081 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:08:39,083 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:08:39,084 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:08:39,085 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:08:39,086 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:08:39,087 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:08:39,087 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:08:39,088 - quality_etl - INFO - Column 'machine_no.': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:08:39,088 - quality_etl - INFO - Column 'oper._no.': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:08:39,089 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:08:39,089 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:08:39,106 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:08:39,106 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:08:39,115 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:08:39,447 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:08:39,450 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:08:39,452 - quality_etl - INFO - Marked staging records with batch_id 20251026_210838 as processed
+2025-10-26 21:08:39,452 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:09:19,096 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:09:19,097 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:09:19,097 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:09:19,171 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:09:19,367 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:09:19,367 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:09:19,369 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:09:19,370 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:09:19,371 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:09:19,371 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:09:19,372 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:09:19,373 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:19,374 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:09:19,376 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:09:19,376 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:09:19,377 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:19,378 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:19,380 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:19,381 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:19,382 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:09:19,383 - quality_etl - INFO - Column 'machine_no.': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:09:19,384 - quality_etl - INFO - Column 'oper._no.': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:09:19,385 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:19,386 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:19,406 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:09:19,406 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:09:19,419 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:09:19,759 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:09:19,762 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:09:19,765 - quality_etl - INFO - Marked staging records with batch_id 20251026_210919 as processed
+2025-10-26 21:09:19,765 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:09:30,479 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:09:30,479 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:09:30,480 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:09:30,549 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:09:30,722 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:09:30,723 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:09:30,723 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:09:30,724 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:09:30,725 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:09:30,725 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:09:30,726 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:09:30,727 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:30,727 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:09:30,729 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:09:30,730 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:09:30,731 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:30,732 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:30,732 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:30,733 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:30,734 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:09:30,735 - quality_etl - INFO - Column 'machine_no.': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:09:30,736 - quality_etl - INFO - Column 'oper._no.': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:09:30,737 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:30,738 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:30,755 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:09:30,756 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:09:30,768 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:09:31,000 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:09:31,003 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:09:31,006 - quality_etl - INFO - Marked staging records with batch_id 20251026_210930 as processed
+2025-10-26 21:09:31,007 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:09:38,954 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:09:38,955 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:09:38,955 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:09:39,025 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:09:39,201 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:09:39,202 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:09:39,203 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:09:39,203 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:09:39,204 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:09:39,205 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:09:39,206 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:09:39,207 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:39,207 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:09:39,208 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:09:39,210 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:09:39,210 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:39,210 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:39,211 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:39,212 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:39,214 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:09:39,214 - quality_etl - INFO - Column 'machine_no.': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:09:39,214 - quality_etl - INFO - Column 'oper._no.': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:09:39,216 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:39,218 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:39,237 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:09:39,237 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:09:39,246 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:09:39,464 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:09:39,466 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:09:39,469 - quality_etl - INFO - Marked staging records with batch_id 20251026_210938 as processed
+2025-10-26 21:09:39,469 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:09:50,059 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:09:50,060 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:09:50,060 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:09:50,127 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:09:50,201 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:09:50,202 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:09:50,203 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:09:50,204 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:09:50,204 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:09:50,206 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:09:50,207 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:09:50,208 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:50,208 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:09:50,209 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:09:50,210 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:09:50,211 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:50,211 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:50,212 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:50,213 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:09:50,214 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:09:50,215 - quality_etl - INFO - Column 'machine_no.': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:09:50,215 - quality_etl - INFO - Column 'oper._no.': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:09:50,217 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:50,218 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:09:50,235 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:09:50,235 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:09:50,246 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:09:50,464 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:09:50,467 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:09:50,469 - quality_etl - INFO - Marked staging records with batch_id 20251026_210950 as processed
+2025-10-26 21:09:50,469 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:17:34,909 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:17:34,909 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:17:34,911 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:17:34,982 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:17:35,044 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:17:35,045 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:17:35,046 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:17:35,047 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:17:35,047 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:17:35,048 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:17:35,049 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:17:35,049 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:17:35,050 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:17:35,050 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:17:35,051 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:17:35,051 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:17:35,052 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:17:35,052 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:17:35,053 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:17:35,053 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:17:35,053 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:17:35,055 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:17:35,056 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:17:35,056 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:17:35,072 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:17:35,072 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:17:35,073 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:17:35,074 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:17:35,074 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:17:35,074 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:17:35,086 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:17:35,463 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:17:35,466 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:17:35,469 - quality_etl - INFO - Marked staging records with batch_id 20251026_211734 as processed
+2025-10-26 21:17:35,469 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:18:19,178 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:18:19,178 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:18:19,178 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:18:19,353 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:18:19,527 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:18:19,527 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:18:19,534 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:18:19,535 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:19,535 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:19,536 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:19,536 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:19,537 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:18:19,537 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:18:19,537 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:18:19,538 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:18:19,538 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:18:19,552 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:18:19,554 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:18:19,554 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:18:19,554 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:18:19,554 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:18:19,554 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:18:19,564 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:18:19,927 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:18:19,929 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:18:19,933 - quality_etl - INFO - Marked staging records with batch_id 20251026_211819 as processed
+2025-10-26 21:18:19,933 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:18:56,474 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:18:56,474 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:18:56,475 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:18:56,542 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:18:56,617 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:18:56,619 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:18:56,619 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:18:56,620 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:18:56,620 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:18:56,622 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:18:56,622 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:18:56,623 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:18:56,624 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:18:56,625 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:18:56,626 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:18:56,627 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:56,627 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:56,628 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:56,629 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:18:56,629 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:18:56,630 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:18:56,631 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:18:56,631 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:18:56,632 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:18:56,651 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:18:56,652 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:18:56,652 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:18:56,654 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:18:56,655 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:18:56,655 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:18:56,669 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:18:56,924 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:18:56,927 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:18:56,927 - quality_etl - INFO - Marked staging records with batch_id 20251026_211856 as processed
+2025-10-26 21:18:56,927 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:19:06,169 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:19:06,169 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:19:06,170 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:19:06,240 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:19:06,316 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:19:06,317 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:19:06,317 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:19:06,319 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:19:06,320 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:19:06,321 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:19:06,321 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:19:06,322 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:19:06,323 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:19:06,324 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:19:06,325 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:19:06,326 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:06,327 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:06,327 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:06,328 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:06,328 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:19:06,330 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:19:06,331 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:19:06,332 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:19:06,333 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:19:06,351 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:19:06,352 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:19:06,353 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:19:06,353 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:19:06,354 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:19:06,355 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:19:06,369 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:19:06,719 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:19:06,722 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:19:06,725 - quality_etl - INFO - Marked staging records with batch_id 20251026_211906 as processed
+2025-10-26 21:19:06,726 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:19:29,812 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:19:29,813 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:19:29,813 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:19:29,887 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:19:29,982 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:19:29,983 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:19:29,984 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:19:29,985 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:19:29,986 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:19:29,987 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:19:29,987 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:19:29,988 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:19:29,989 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:19:29,990 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:19:29,991 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:19:29,993 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:29,993 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:29,994 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:29,996 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:19:29,997 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:19:29,998 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:19:30,000 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:19:30,001 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:19:30,002 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:19:30,021 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:19:30,021 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:19:30,023 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:19:30,023 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:19:30,024 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:19:30,029 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:19:30,052 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:19:30,330 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:19:30,334 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:19:30,337 - quality_etl - INFO - Marked staging records with batch_id 20251026_211929 as processed
+2025-10-26 21:19:30,337 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:20:03,741 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:20:03,741 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:20:03,742 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:20:03,832 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:20:03,906 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:20:03,907 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:20:03,908 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:20:03,909 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:20:03,909 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:20:03,911 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:20:03,912 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:20:03,913 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:03,914 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:20:03,915 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:20:03,915 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:20:03,916 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:03,917 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:03,918 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:03,918 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:03,919 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:20:03,919 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:20:03,920 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:20:03,921 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:03,923 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:03,941 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:20:03,943 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:20:03,944 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:20:03,945 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:20:03,946 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:20:03,946 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:20:03,963 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:20:04,315 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:20:04,318 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:20:04,321 - quality_etl - INFO - Marked staging records with batch_id 20251026_212003 as processed
+2025-10-26 21:20:04,321 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:20:11,920 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:20:11,921 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:20:11,921 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:20:11,991 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:20:12,165 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:20:12,166 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:20:12,167 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:20:12,168 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:20:12,168 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:20:12,170 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:20:12,170 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:20:12,170 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:12,171 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:20:12,173 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:20:12,173 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:20:12,174 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:12,175 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:12,176 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:12,177 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:12,178 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:20:12,179 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:20:12,179 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:20:12,180 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:12,182 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:12,198 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:20:12,199 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:20:12,200 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:20:12,201 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:20:12,201 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:20:12,202 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:20:12,217 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:20:12,596 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:20:12,598 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:20:12,602 - quality_etl - INFO - Marked staging records with batch_id 20251026_212011 as processed
+2025-10-26 21:20:12,603 - quality_etl - INFO -  ETL Pipeline completed successfully!
+2025-10-26 21:20:13,914 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-10-26 21:20:13,914 - quality_etl - INFO - Phase 1: Extraction
+2025-10-26 21:20:13,915 - quality_etl - INFO - Starting database extraction
+2025-10-26 21:20:13,989 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+                ORDER BY date
+            
+2025-10-26 21:20:14,064 - quality_etl - INFO - === SOURCE DATA COLUMN ANALYSIS ===
+2025-10-26 21:20:14,065 - quality_etl - INFO - Column 'part_number': 123 unique values, samples: ['L003021293H2YAE', 'L003021293H2YAE', 'L003021293H2YAE']
+2025-10-26 21:20:14,065 - quality_etl - INFO - Column 'serial_number': 682 unique values, samples: ['L003021293H2YAE_700602760021', 'L003021293H2YAE_700602100007', 'L003021293H2YAE_700602100002']
+2025-10-26 21:20:14,066 - quality_etl - INFO - Column 'date': 726 unique values, samples: [Timestamp('2025-10-20 06:30:15.647000'), Timestamp('2025-10-20 06:44:30.887000'), Timestamp('2025-10-20 06:50:09.790000')]
+2025-10-26 21:20:14,067 - quality_etl - INFO - Column 'shift': 2 unique values, samples: ['1', '1', '1']
+2025-10-26 21:20:14,068 - quality_etl - INFO - Column 'disposition': 4 unique values, samples: ['Repaired', 'Repaired', 'Repaired']
+2025-10-26 21:20:14,069 - quality_etl - INFO - Column 'code': 81 unique values, samples: ['A084', 'A163', 'A065']
+2025-10-26 21:20:14,070 - quality_etl - INFO - Column 'code_description': 81 unique values, samples: ['TALON DE COUTURE NOK "LARGE"', 'POINTS D’ARRÊT NOK (PRÉCOUTURE)', 'CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:14,071 - quality_etl - INFO - Column 'category': 1 unique values, samples: ['Sewing', 'Sewing', 'Sewing']
+2025-10-26 21:20:14,072 - quality_etl - INFO - Column 'type': 2 unique values, samples: ['Final inspection', 'Final inspection', 'Final inspection']
+2025-10-26 21:20:14,072 - quality_etl - INFO - Column 'who_made_it': 170 unique values, samples: ['2036512', '2036512', '1977350']
+2025-10-26 21:20:14,073 - quality_etl - INFO - Column 'regist._by': 27 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:14,075 - quality_etl - INFO - Column 'repair._by': 23 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:14,076 - quality_etl - INFO - Column 'qua_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:14,077 - quality_etl - INFO - Column 'prod_auth.': 24 unique values, samples: ['2036512', '2036512', '1941033']
+2025-10-26 21:20:14,078 - quality_etl - INFO - Column 'scrap_auth.': 13 unique values, samples: ['-', '-', '-']
+2025-10-26 21:20:14,079 - quality_etl - INFO - Column 'machine_no': 113 unique values, samples: ['44', '46', '20']
+2025-10-26 21:20:14,080 - quality_etl - INFO - Column 'operator_no': 45 unique values, samples: ['3', '15', '15']
+2025-10-26 21:20:14,081 - quality_etl - INFO - Column 'defect_comment': 267 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:14,082 - quality_etl - INFO - Column 'repair_comment': 194 unique values, samples: ['77 A084 TALON DE COUTURE NOK "LARGE"', '64 A065 CRAN MISS MATCH " DECALAGE DES CRANS"', '60 A065 CRAN MISS MATCH " DECALAGE DES CRANS"']
+2025-10-26 21:20:14,101 - quality_etl - INFO - Extracted 726 new records
+2025-10-26 21:20:14,102 - quality_etl - INFO - SOURCE machine_no sample: ['44', '46', '20', '16', '50', 'SM-263', '40', 'SM-362', '45', '19']
+2025-10-26 21:20:14,103 - quality_etl - INFO - SOURCE machine_not null count: 726
+2025-10-26 21:20:14,104 - quality_etl - INFO - SOURCE operator_no sample: ['3', '15', '15', '5', '10', '16', '18', '12', '16', '14']
+2025-10-26 21:20:14,104 - quality_etl - INFO - SOURCE operator_no null count: 726
+2025-10-26 21:20:14,105 - quality_etl - INFO - Phase 2: Transformation
+2025-10-26 21:20:14,118 - quality_etl - INFO - Phase 3: Loading
+2025-10-26 21:20:14,471 - quality_etl - INFO - Loaded 726 records to clean table
+2025-10-26 21:20:14,474 - quality_etl - INFO - ETL metadata updated successfully
+2025-10-26 21:20:14,476 - quality_etl - INFO - Marked staging records with batch_id 20251026_212013 as processed
+2025-10-26 21:20:14,477 - quality_etl - INFO -  ETL Pipeline completed successfully!

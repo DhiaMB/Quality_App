@@ -1,0 +1,53 @@
+etl:
+  batch_size: 1000
+  max_retries: 3
+  retry_delay: 30
+  
+extraction:
+  incremental_column: "date"
+  lookback_days: 7
+  default_start_date: "2024-01-01"
+  
+transformation:
+  code_mapping:
+    "manque port cable wire": "manque câble"
+    "manque cable wire": "manque câble"
+    "manque cable": "manque câble"
+    "point saute": "point sauté"
+    "point cassee": "point cassé"
+    "point d arret nok nembre des points": "point d'arrêt nok nombre des points"
+    "manque point d arret": "manque point d'arrêt"
+    "surpiquage double irreguliere": "surpiquage double nok"
+    "surpiquage double epais": "surpiquage double nok"
+    "couture surpiquage simple/double ne pas cémitrique": "couture surpiquage simple/double non symétrique"
+    "tension nok lache": "tension nok lâché"
+    "tension nok lacher surpiquage simple/double": "tension nok lâché"
+    "materiel element pris en couture": "matériel pris en couture"
+    "etiquette de traçabilité erroné": "étiquette traçabilité nok"
+    "cran miss match decalage des crans": "cran mismatch"
+    "profil inversé avec j forme": "profil nok (j-forme)"
+    "manque profil normal forme": "manque profil (forme normale)"
+    "pipping ondulé irrigulier": "piping ondulé nok"
+    "couleur de fil de surpiquage double incorrect": "couleur fil nok"
+    "trou visible sur la couture surpiquage simple/double": "trou nok surpiq."
+    "trous d aiguille": "trous d'aiguille"
+    "rides / pleat": "rides / pleats"
+    "couture ouverte non respecte papillon": "couture ouverte nok"
+    "couture incomplete": "couture incomplète"
+    "point de couture courte": "point court nok"
+    "point de couture large": "point large nok"
+
+  target_columns:
+    - "part_number"
+    - "serial_number" 
+    - "date"
+    - "shift"
+    - "disposition"
+    - "code"
+    - "code_description"
+    - "category"
+    - "type"
+    - "machine_no"
+    - "operator_no"
+    - "defect_comment"
+    - "repair_comment"
