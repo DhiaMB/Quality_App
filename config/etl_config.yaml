@@ -16,6 +16,6 @@ transformation:
   - category
   - type
   - machine_no
-  - operator_no
+  - who_made_it
   - defect_comment
   - repair_comment

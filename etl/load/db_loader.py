@@ -44,9 +44,7 @@ class DatabaseLoader(BaseLoader):
                 self.engine, 
                 schema='quality', 
                 if_exists='append', 
-                index=False,
-                method='multi',
-                chunksize=1000
+                index=False
             )
             logger.info(f"Loaded {len(df)} records to staging table")
             return len(df)
@@ -61,15 +59,17 @@ class DatabaseLoader(BaseLoader):
             return 0
         
         try:
-            # Use pandas to_sql for bulk insert - much simpler and faster
+            # DEBUG: Check what we're loading
+            logger.info(f"Loading DataFrame with columns: {df.columns.tolist()}")
+            logger.info(f"DataFrame shape: {df.shape}")
+            
+            # Use simple to_sql without method='multi'
             records_loaded = df.to_sql(
                 'clean_quality_data', 
                 self.engine, 
                 schema='quality', 
                 if_exists='append', 
-                index=False,
-                method='multi',
-                chunksize=1000
+                index=False
             )
             
             logger.info(f"Loaded {records_loaded} records to clean table")

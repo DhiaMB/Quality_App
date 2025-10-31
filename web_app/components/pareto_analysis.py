@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from web_app.utils.chart_builder import create_modern_pareto_chart
+from datetime import datetime, timedelta
 
 def defect_pareto(df, top_n=15):
     """Redesigned Pareto analysis with meaningful quality charts"""
@@ -10,6 +11,9 @@ def defect_pareto(df, top_n=15):
     if df.empty:
         st.info("No data available for analysis")
         return
+    
+    # Data preprocessing - fix column names and types
+    df = preprocess_data(df)
     
     # Three meaningful tabs for quality team
     tab1, tab2, tab3 = st.tabs([
@@ -22,7 +26,39 @@ def defect_pareto(df, top_n=15):
         render_chronic_issues(df, top_n)
     
     with tab2:
+        render_todays_hotspots(df)
+    
+    with tab3:
         render_daily_performance(df)
+
+def preprocess_data(df):
+    """Fix column names and data types"""
+    # Create consistent column names (adjust based on your actual CSV)
+    if 'Code description' in df.columns:
+        df['code_description'] = df['Code description']
+    if 'Who made it' in df.columns:
+        df['operator'] = df['Who made it']
+    if 'Disposition' in df.columns:
+        df['disposition'] = df['Disposition']
+        df['disposition_norm'] = df['Disposition'].str.upper()
+    
+    # Convert date column
+    date_column = None
+    for col in ['Date', 'date', 'DATE']:
+        if col in df.columns:
+            date_column = col
+            break
+    
+    if date_column:
+        df['date'] = pd.to_datetime(df[date_column])
+        # Create date-only column for grouping
+        df['date_only'] = df['date'].dt.date
+    
+    # Create a unique ID if not present
+    if 'id' not in df.columns:
+        df['id'] = range(1, len(df) + 1)
+    
+    return df
 
 def render_chronic_issues(df, top_n):
     """Show chronic/recurring quality issues"""
@@ -53,7 +89,7 @@ def render_chronic_issues(df, top_n):
     
     with col2:
         if not pareto_data.empty:
-            top_3_coverage = pareto_data.head(3)['percentage'].sum()
+            top_3_coverage = pareto_data.head(3)['cumulative_percentage'].iloc[2]
             st.metric("Top 3 Issues Coverage", f"{top_3_coverage:.1f}%")
     
     with col3:
@@ -64,45 +100,128 @@ def render_chronic_issues(df, top_n):
     st.markdown("#### 💡 Improvement Opportunities")
     if not pareto_data.empty:
         top_issue = pareto_data.iloc[0]
-        st.warning(f"**Priority #1**: {top_issue['category']} - {top_issue['count']} occurrences ({top_issue['percentage']}%)")
+        st.warning(f"**Priority #1**: {top_issue['category']} - {top_issue['count']} occurrences ({top_issue['percentage']:.1f}%)")
         
         if len(pareto_data) > 1:
             second_issue = pareto_data.iloc[1]
             st.info(f"**Priority #2**: {second_issue['category']} - {second_issue['count']} occurrences")
+
+def render_todays_hotspots(df):
+    """Show today's defect hotspots by operator and machine"""
+    st.markdown("### 🚨 Today's Hot Spots")
+    
+    if 'date' not in df.columns:
+        st.warning("No date data available")
+        return
+    
+    # Get today's data
+    today = pd.Timestamp.now().normalize()
+    today_data = df[df['date'].dt.normalize() == today]
+    
+    if today_data.empty:
+        st.info("No defects recorded today")
+        return
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("#### 👥 Top Defective Operators Today")
+        if 'operator' in today_data.columns:
+            operator_defects = today_data['operator'].value_counts().head(10)
+            if not operator_defects.empty:
+                fig = go.Figure(data=[go.Bar(
+                    x=operator_defects.values,
+                    y=operator_defects.index,
+                    orientation='h',
+                    marker_color='#ff6b6b'
+                )])
+                fig.update_layout(
+                    title="Top Operators with Defects Today",
+                    xaxis_title="Number of Defects",
+                    yaxis_title="Operator ID",
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No operator data available")
+    
+    with col2:
+        st.markdown("#### 🏭 Top Defective Machines Today")
+        if 'Machine no.' in today_data.columns:
+            machine_defects = today_data['Machine no.'].value_counts().head(10)
+            if not machine_defects.empty:
+                fig = go.Figure(data=[go.Bar(
+                    x=machine_defects.values,
+                    y=machine_defects.index,
+                    orientation='h',
+                    marker_color='#4ecdc4'
+                )])
+                fig.update_layout(
+                    title="Top Machines with Defects Today",
+                    xaxis_title="Number of Defects",
+                    yaxis_title="Machine Number",
+                    height=400
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No machine data available")
+    
+    # Today's summary
+    st.markdown("#### 📋 Today's Summary")
+    today_col1, today_col2, today_col3, today_col4 = st.columns(4)
+    
+    with today_col1:
+        st.metric("Defects Today", len(today_data))
+    
+    with today_col2:
+        scrap_today = len(today_data[today_data['disposition_norm'] == 'SCRAP']) if 'disposition_norm' in today_data.columns else 0
+        st.metric("Scrap Today", scrap_today)
+    
+    with today_col3:
+        unique_issues_today = today_data['code_description'].nunique() if 'code_description' in today_data.columns else 0
+        st.metric("Unique Issues", unique_issues_today)
+    
+    with today_col4:
+        operators_affected = today_data['operator'].nunique() if 'operator' in today_data.columns else 0
+        st.metric("Operators Affected", operators_affected)
 
 def render_daily_performance(df):
     """Show daily performance trends and comparisons - FIXED VERSION"""
     st.markdown("### 📊 Daily Performance Trends")
     st.info("Track daily performance against historical averages")
     
-    if df.empty or 'date' not in df.columns:
+    if df.empty or 'date_only' not in df.columns:
         st.warning("No date data available")
         return
     
     try:
-        # Calculate daily trends - only include numeric columns
-        daily_stats = df.groupby(df['date'].dt.date).agg({
+        # Calculate daily trends
+        daily_stats = df.groupby('date_only').agg({
             'id': 'count',
-            'disposition_norm': lambda x: (x == 'SCRAP').sum()
+            'disposition_norm': lambda x: (x == 'SCRAP').sum() if 'disposition_norm' in df.columns else 0
         }).reset_index()
         
         daily_stats.columns = ['date', 'total_defects', 'scrap_count']
         daily_stats['scrap_rate'] = (daily_stats['scrap_count'] / daily_stats['total_defects'] * 100).round(1)
         
-        if daily_stats.empty or len(daily_stats) < 2:
-            st.warning("Need at least 2 days of data for trend analysis")
+        if daily_stats.empty:
+            st.warning("No daily data available for analysis")
             return
         
-        # Latest day vs average comparison - FIXED
+        if len(daily_stats) < 2:
+            st.warning("Need at least 2 days of data for trend analysis")
+            st.write("Available data:", daily_stats)
+            return
+        
+        # Latest day vs average comparison
         latest_day = daily_stats.iloc[-1]
         
-        # Calculate historical average excluding latest day - only numeric columns
-        historical_data = daily_stats[:-1]  # Exclude latest day
-        historical_avg = {
-            'total_defects': historical_data['total_defects'].mean(),
-            'scrap_count': historical_data['scrap_count'].mean(),
-            'scrap_rate': historical_data['scrap_rate'].mean()
-        }
+        # Calculate historical average excluding latest day
+        historical_avg = daily_stats[:-1].agg({
+            'total_defects': 'mean',
+            'scrap_count': 'mean', 
+            'scrap_rate': 'mean'
+        })
         
         # Comparison metrics
         col1, col2, col3, col4 = st.columns(4)
@@ -110,27 +229,27 @@ def render_daily_performance(df):
         with col1:
             defects_vs_avg = latest_day['total_defects'] - historical_avg['total_defects']
             st.metric(
-                "Defects Today vs Avg", 
+                "Defects Today", 
                 f"{latest_day['total_defects']}",
-                delta=f"{defects_vs_avg:+.0f}",
+                delta=f"{defects_vs_avg:+.0f} vs avg",
                 delta_color="normal" if defects_vs_avg <= 0 else "inverse"
             )
         
         with col2:
             scrap_vs_avg = latest_day['scrap_count'] - historical_avg['scrap_count']
             st.metric(
-                "Scrap Today vs Avg", 
+                "Scrap Today", 
                 f"{latest_day['scrap_count']}",
-                delta=f"{scrap_vs_avg:+.0f}",
+                delta=f"{scrap_vs_avg:+.0f} vs avg",
                 delta_color="normal" if scrap_vs_avg <= 0 else "inverse"
             )
         
         with col3:
             scrap_rate_vs_avg = latest_day['scrap_rate'] - historical_avg['scrap_rate']
             st.metric(
-                "Scrap Rate vs Avg", 
+                "Scrap Rate", 
                 f"{latest_day['scrap_rate']:.1f}%",
-                delta=f"{scrap_rate_vs_avg:+.1f}%",
+                delta=f"{scrap_rate_vs_avg:+.1f}% vs avg",
                 delta_color="normal" if scrap_rate_vs_avg <= 0 else "inverse"
             )
         
@@ -227,4 +346,65 @@ def render_daily_performance(df):
         if 'daily_stats' in locals():
             st.write("Daily stats shape:", daily_stats.shape)
             st.write("Daily stats columns:", daily_stats.columns.tolist())
-            st.write("Daily stats data:", daily_stats)
+            st.write("Latest few rows:", daily_stats.tail())
+
+# If you need a simple version of create_modern_pareto_chart, here's a basic implementation:
+def create_modern_pareto_chart(series, title, xaxis_title, top_n=15):
+    """Create a modern Pareto chart if your utils module isn't available"""
+    counts = series.value_counts().head(top_n)
+    
+    if counts.empty:
+        return None, pd.DataFrame()
+    
+    # Calculate percentages and cumulative percentages
+    total = counts.sum()
+    percentages = (counts / total * 100).round(1)
+    cumulative_percentages = percentages.cumsum()
+    
+    # Create figure with secondary y-axis
+    fig = go.Figure()
+    
+    # Bar chart for counts
+    fig.add_trace(go.Bar(
+        x=counts.index,
+        y=counts.values,
+        name="Count",
+        marker_color='#3366cc',
+        text=counts.values,
+        textposition='auto',
+    ))
+    
+    # Line chart for cumulative percentage
+    fig.add_trace(go.Scatter(
+        x=counts.index,
+        y=cumulative_percentages.values,
+        name="Cumulative %",
+        yaxis="y2",
+        line=dict(color='#ff9900', width=3),
+        marker=dict(size=8)
+    ))
+    
+    fig.update_layout(
+        title=title,
+        xaxis_title=xaxis_title,
+        yaxis_title="Count",
+        yaxis2=dict(
+            title="Cumulative Percentage",
+            overlaying="y",
+            side="right",
+            range=[0, 100]
+        ),
+        xaxis_tickangle=-45,
+        hovermode="x unified",
+        height=500
+    )
+    
+    # Prepare pareto data
+    pareto_data = pd.DataFrame({
+        'category': counts.index,
+        'count': counts.values,
+        'percentage': percentages.values,
+        'cumulative_percentage': cumulative_percentages.values
+    })
+    
+    return fig, pareto_data

@@ -80,7 +80,7 @@ class DatabaseExtractor(BaseExtractor):
             # First run - extract last 7 days
             query = """
                 SELECT * FROM lpb_quality_data 
-                WHERE date >= CURRENT_DATE - INTERVAL '1 days'
+                WHERE date >= CURRENT_DATE - INTERVAL '356 days'
                 ORDER BY date
             """
             params = None

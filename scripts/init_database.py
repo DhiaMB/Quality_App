@@ -61,7 +61,7 @@ def init_database():
                 category VARCHAR(100),
                 type VARCHAR(100),
                 machine_no VARCHAR(50),
-                operator_no VARCHAR(50),
+                who_made_it VARCHAR(100),          
                 defect_comment TEXT,
                 repair_comment TEXT,
                 data_quality_score INTEGER,
