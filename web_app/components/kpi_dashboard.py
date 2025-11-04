@@ -101,7 +101,7 @@ class QualityApp:
         # Sidebar controls
         days, top_n, rel_thresh, abs_thresh, alpha = self.sidebar_controls()
         
-        # Load data
+        # Load data from database
         with st.spinner('🔄 Loading quality data...'):
             df = load_data(self.engine, days=days)
         
@@ -122,10 +122,11 @@ class QualityApp:
         self.header_kpis(df, current_period, prior_period)
         st.markdown("---")
         
-        defect_pareto(df, top_n=top_n)
+        # Pass engine to defect_pareto so it can load data from DB itself
+        defect_pareto(self.engine, top_n=top_n)
         st.markdown("---")
 
-        alerts_panel(df, current_period, prior_period, rel_thresh=rel_thresh, abs_thresh=abs_thresh, alpha=alpha)
+        alerts_panel(self.engine, current_period, prior_period, rel_thresh=rel_thresh, abs_thresh=abs_thresh, alpha=alpha)
         st.markdown("---")
 
         summary = summary_by_part(df)
