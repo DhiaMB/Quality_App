@@ -32,10 +32,10 @@ def defect_pareto(engine, top_n=15):
         render_operator_trends(engine)
     
     with tab3:
-        render_daily_performance(engine)
+        render_performance_trends(engine)
     
-    with tab4:
-        render_advanced_analysis(engine)
+   # with tab4:
+    #    render_advanced_analysis(engine)
 
 def run_query(query, engine):
     """Run SQL query and return DataFrame"""
@@ -200,13 +200,7 @@ def render_chronic_issues(engine, top_n):
         
     except Exception as e:
         st.error(f"Error loading data from database: {e}")
-import streamlit as st
-import pandas as pd
-import numpy as np
 
-import streamlit as st
-import pandas as pd
-import numpy as np
 
 def render_operator_trends(engine):
     """Show operator performance trends over time using monthly aggregation"""
@@ -307,124 +301,145 @@ def render_operator_trends(engine):
     st.dataframe(kpi.sort_values('defect_count', ascending=False))
 
 
-def render_daily_performance(engine):
-    """Show daily performance trends and comparisons - DIRECT FROM DATABASE"""
-    st.markdown("### 📊 Daily Performance Trends")
-    
-    # Query for daily performance data
-    daily_query = """
-    SELECT 
-        DATE(date) as date,
-        COUNT(*) as total_defects,
-        COUNT(CASE WHEN disposition = 'Scrap' THEN 1 END) as scrap_count
-    FROM quality.clean_quality_data
-    WHERE date >= CURRENT_DATE - INTERVAL '30 days'
-    GROUP BY DATE(date)
-    ORDER BY date DESC
-    """
-    
-    try:
-        daily_data = pd.read_sql(daily_query, engine)
-        
-        if daily_data.empty:
-            st.warning("No daily data available for analysis")
-            return
-        
-        # Calculate scrap rate
-        daily_data['scrap_rate'] = (daily_data['scrap_count'] / daily_data['total_defects'] * 100).round(1)
-        daily_data['date'] = pd.to_datetime(daily_data['date'])
-        
-        # Latest day vs average comparison
-        latest_day = daily_data.iloc[0]  # Most recent day (DESC order)
-        historical_avg = daily_data.iloc[1:].mean()  # Exclude latest day
-        
-        # Comparison metrics
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            defects_vs_avg = latest_day['total_defects'] - historical_avg['total_defects']
-            st.metric(
-                "Latest Day Defects", 
-                f"{latest_day['total_defects']}",
-                delta=f"{defects_vs_avg:+.0f} vs avg"
-            )
-        
-        with col2:
-            scrap_vs_avg = latest_day['scrap_count'] - historical_avg['scrap_count']
-            st.metric(
-                "Latest Day Scrap", 
-                f"{latest_day['scrap_count']}",
-                delta=f"{scrap_vs_avg:+.0f} vs avg"
-            )
-        
-        with col3:
-            scrap_rate_vs_avg = latest_day['scrap_rate'] - historical_avg['scrap_rate']
-            st.metric(
-                "Latest Scrap Rate", 
-                f"{latest_day['scrap_rate']:.1f}%",
-                delta=f"{scrap_rate_vs_avg:+.1f}% vs avg"
-            )
-        
-        with col4:
-            trend_direction = "📈 Worse" if defects_vs_avg > 0 else "📉 Better"
-            st.metric("Trend Direction", trend_direction)
-        
-        # Daily trends chart
-        st.markdown("#### 📈 30-Day Trend")
-        if len(daily_data) > 1:
-            fig = go.Figure()
-            
-            fig.add_trace(go.Scatter(
-                x=daily_data['date'],
-                y=daily_data['total_defects'],
-                name='Daily Defects',
-                line=dict(color='#1f77b4', width=3),
-                mode='lines+markers'
-            ))
-            
-            fig.add_trace(go.Scatter(
-                x=daily_data['date'],
-                y=daily_data['scrap_rate'],
-                name='Scrap Rate %',
-                line=dict(color='#d62728', width=2, dash='dot'),
-                yaxis='y2'
-            ))
-            
-            fig.update_layout(
-                title="Daily Defects & Scrap Rate Trend (Last 30 Days)",
-                xaxis_title="Date",
-                yaxis_title="Defect Count",
-                yaxis2=dict(
-                    title="Scrap Rate %",
-                    overlaying='y',
-                    side='right'
-                ),
-                height=400
-            )
-            
-            st.plotly_chart(fig, use_container_width=True)
-        
-        # Weekly summary
-        st.markdown("#### 📅 Weekly Performance")
-        weekly_query = """
-        SELECT 
-            EXTRACT(WEEK FROM date) as week_number,
-            COUNT(*) as total_defects,
-            COUNT(CASE WHEN disposition = 'Scrap' THEN 1 END) as scrap_count
-        FROM quality.clean_quality_data
-        WHERE date >= CURRENT_DATE - INTERVAL '8 weeks'
-        GROUP BY week_number
-        ORDER BY week_number
-        """
-        
-        weekly_data = pd.read_sql(weekly_query, engine)
-        if not weekly_data.empty:
-            weekly_data['scrap_rate'] = (weekly_data['scrap_count'] / weekly_data['total_defects'] * 100).round(1)
-            st.dataframe(weekly_data, use_container_width=True)
-            
-    except Exception as e:
-        st.error(f"Error loading daily performance data: {e}")
+def render_performance_trends(engine):
+    """Dynamic performance trends dashboard (Daily, Weekly, Monthly)"""
+    st.markdown("## 📊 Performance Trends")
+    st.info("Analyze defects and scrap rate trends by time period")
 
+    # --- Time granularity selection ---
+    view = st.selectbox(
+        "Select time granularity:",
+        ["Daily", "Weekly", "Monthly"],
+        index=2  # Default: Monthly
+    )
+
+    # --- Build SQL query based on granularity ---
+    if view == "Daily":
+        query = """
+        SELECT 
+            DATE(date) AS period,
+            COUNT(*) AS total_defects,
+            COUNT(CASE WHEN UPPER(disposition) = 'SCRAP' THEN 1 END) AS scrap_count
+        FROM quality.clean_quality_data
+        WHERE date >= CURRENT_DATE - INTERVAL '30 days'
+        GROUP BY DATE(date)
+        ORDER BY period ASC
+        """
+    elif view == "Weekly":
+        query = """
+        SELECT 
+            DATE_TRUNC('week', date)::date AS period,
+            COUNT(*) AS total_defects,
+            COUNT(CASE WHEN UPPER(disposition) = 'SCRAP' THEN 1 END) AS scrap_count
+        FROM quality.clean_quality_data
+        WHERE date >= CURRENT_DATE - INTERVAL '12 weeks'
+        GROUP BY DATE_TRUNC('week', date)::date
+        ORDER BY period ASC
+        """
+    else:  # Monthly
+        query = """
+        SELECT 
+            DATE_TRUNC('month', date)::date AS period,
+            COUNT(*) AS total_defects,
+            COUNT(CASE WHEN UPPER(disposition) = 'SCRAP' THEN 1 END) AS scrap_count
+        FROM quality.clean_quality_data
+        WHERE date >= CURRENT_DATE - INTERVAL '12 months'
+        GROUP BY DATE_TRUNC('month', date)::date
+        ORDER BY period ASC
+        """
+
+    try:
+        # --- Load data ---
+        df = pd.read_sql(query, engine)
+        if df.empty:
+            st.warning(f"No {view.lower()} data available for analysis.")
+            return
+
+        # --- Prepare data ---
+        df['period'] = pd.to_datetime(df['period'])
+        df = df.sort_values('period', ascending=True)
+        
+        # Calculate scrap rate as percentage
+        df['scrap_rate'] = (df['scrap_count'] / df['total_defects']) * 100
+        df['scrap_rate'] = df['scrap_rate'].round(2)
+
+        # --- Compute averages for comparison ---
+        if len(df) > 1:
+            latest = df.iloc[-1]
+            avg_prev = df.iloc[:-1].mean(numeric_only=True)
+        else:
+            latest = df.iloc[0]
+            avg_prev = latest
+
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            delta = latest['total_defects'] - avg_prev['total_defects'] if len(df) > 1 else 0
+            st.metric("Defects", f"{int(latest['total_defects'])}", f"{delta:+.0f} vs avg")
+        with col2:
+            delta = latest['scrap_count'] - avg_prev['scrap_count'] if len(df) > 1 else 0
+            st.metric("Scrap", f"{int(latest['scrap_count'])}", f"{delta:+.0f} vs avg")
+        with col3:
+            delta = latest['scrap_rate'] - avg_prev['scrap_rate'] if len(df) > 1 else 0
+            st.metric("Scrap Rate", f"{latest['scrap_rate']:.1f}%", f"{delta:+.1f}% vs avg")
+        with col4:
+            trend = "📈 Worse" if delta > 0 else "📉 Better" if len(df) > 1 else "➡️ Stable"
+            st.metric("Trend Direction", trend)
+
+        # --- ENHANCED INTERACTIVE CHARTS WITH ALT AIR ---
+        import altair as alt
+        
+        # Format period for display
+        if view == "Daily":
+            df['period_display'] = df['period'].dt.strftime('%Y-%m-%d')
+        elif view == "Weekly":
+            df['period_display'] = df['period'].dt.strftime('Week of %Y-%m-%d')
+        else:  # Monthly
+            df['period_display'] = df['period'].dt.strftime('%b %Y')
+
+
+
+        # Chart 2: Scrap Rate with enhanced tooltips
+        st.subheader("📉 Scrap Rate Trend (%)")
+        
+        scrap_chart = alt.Chart(df).mark_line(point=True, strokeWidth=3, color='red').encode(
+            x=alt.X('period:T', title=view, axis=alt.Axis(format='%b %d' if view == 'Daily' else '%b %Y')),
+            y=alt.Y('scrap_rate:Q', title='Scrap Rate (%)', scale=alt.Scale(zero=True)),
+            tooltip=[
+                alt.Tooltip('period_display:N', title='Date'),
+                alt.Tooltip('total_defects:Q', title='Defect Count', format=',.0f'),
+                alt.Tooltip('scrap_count:Q', title='Scrap Count', format=',.0f'),
+                alt.Tooltip('scrap_rate:Q', title='Scrap Rate %', format='.1f'),
+                alt.Tooltip('scrap_count:Q', title='Scrap/Total', format=',.0f'),
+                alt.Tooltip('total_defects:Q', title='Total Defects', format=',.0f')
+            ]
+        ).properties(
+            height=400,
+            title=f"{view} Scrap Rate Trend"
+        ).interactive()
+        
+        st.altair_chart(scrap_chart, use_container_width=True)
+
+        # --- Table view ---
+        st.markdown(f"#### 📅 {view} Summary Table")
+        display_df = df.rename(columns={
+            'period': view,
+            'total_defects': 'Total Defects',
+            'scrap_count': 'Scrap Count',
+            'scrap_rate': 'Scrap Rate (%)'
+        }).copy()
+        
+        # Format the period column for display
+        if view == "Daily":
+            display_df[view] = display_df[view].dt.strftime('%Y-%m-%d')
+        elif view == "Weekly":
+            display_df[view] = display_df[view].dt.strftime('Week of %Y-%m-%d')
+        else:  # Monthly
+            display_df[view] = display_df[view].dt.strftime('%b %Y')
+            
+        st.dataframe(display_df, use_container_width=True)
+
+    except Exception as e:
+        st.error(f"Error loading {view.lower()} performance data: {e}")
 def render_advanced_analysis(engine):
     """New advanced analyses from SQL queries"""
     st.markdown("### 🔍 Advanced Quality Analysis")
