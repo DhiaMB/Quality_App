@@ -4,3 +4,8 @@ plotly==5.15.0
 sqlalchemy==2.0.0
 psycopg2-binary==2.9.0
 pyyaml==6.0
+
+pip install XlsxWriter
+pip install openpyxl pillow
+pip install kaleido # for plotly to_image/png export
+pip install python-pptx

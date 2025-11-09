@@ -10,6 +10,9 @@ def time_trends(engine, days=30):
     st.markdown("## 📈 Defect Trends Over Time")
     
     # Load data with the specified days parameter
+    if not hasattr(engine, "connect"):
+        raise TypeError(f"Expected SQLAlchemy engine, got {type(engine)}")
+
     with st.spinner('Loading trend data...'):
         df = load_data(engine, days=days)
     
