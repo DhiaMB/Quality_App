@@ -1,8 +1,8 @@
 import pandas as pd
 from datetime import datetime
-from etl.load.base_loader import BaseLoader
-from etl.utils.db_utils import get_target_engine, execute_sql
-from etl.utils.logger import logger
+from load.base_loader import BaseLoader
+from utils.db_utils import get_target_engine, execute_sql
+from utils.logger import logger
 
 class DatabaseLoader(BaseLoader):
     """Load transformed data to target database"""

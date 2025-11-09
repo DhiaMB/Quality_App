@@ -1,0 +1,33 @@
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+import plotly.express as px
+from web_app.utils.chart_builder import create_modern_pareto_chart
+import psycopg2  # or your database driver
+from sqlalchemy import create_engine
+import os
+
+
+def get_db_connection():
+    return psycopg2.connect(
+        host=st.secrets["DB_HOST"], 
+        database=st.secrets["DB_NAME"], 
+        user=st.secrets["DB_USER"], 
+        password=st.secrets["DB_PASSWORD"]
+    )
+
+def load_data_from_db(date_filter):
+    query = """
+        SELECT code_description, COUNT(*) as defect_count
+        FROM quality.clean_quality_data
+        """
+    
+    if date_filter:
+        query += f"where \"date\" >= '{date_filter}' "
+
+    query += "order by \date\"DESC"
+    
+    with get_db_connection().connect as conn:
+        df = pd.read_sql_query(query, conn)4
+
+    return df

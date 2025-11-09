@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
-from web_app.utils.data_loader import load_data
-from web_app.utils.calculations import period_metrics, summary_by_part
-from web_app.components.pareto_analysis import defect_pareto
-from web_app.components.alerts_panel import alerts_panel
-from web_app.components.trends_analysis import time_trends
-from web_app.components.part_analysis import part_leaderboard, part_detail_with_excel
+from utils.data_loader import load_data
+from utils.calculations import period_metrics, summary_by_part
+from components.alerts_panel import alerts_panel
+from components.trends_analysis import time_trends
+from components.part_analysis import part_leaderboard, part_detail_with_excel
 
 class QualityApp:
     def __init__(self, engine):
@@ -123,8 +122,6 @@ class QualityApp:
         st.markdown("---")
         
         # Pass engine to defect_pareto so it can load data from DB itself
-        defect_pareto(self.engine, top_n=top_n)
-        st.markdown("---")
 
         alerts_panel(self.engine, current_period, prior_period, rel_thresh=rel_thresh, abs_thresh=abs_thresh, alpha=alpha)
         st.markdown("---")

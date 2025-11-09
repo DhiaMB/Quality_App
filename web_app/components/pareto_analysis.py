@@ -76,131 +76,375 @@ def load_data_from_db(engine):
 
     return df
 
+import io
+import zipfile
+import pandas as pd
+import numpy as np
+import streamlit as st
+import plotly.graph_objects as go
+
+# Optional libs (use fallbacks if not installed)
+try:
+    import xlsxwriter  # for embedding images into Excel (preferred)
+    HAS_XLSXWRITER = True
+except Exception:
+    HAS_XLSXWRITER = False
+
+try:
+    import openpyxl  # alternative to xlsxwriter for Excel; used for image insertion if available
+    from openpyxl.drawing.image import Image as OpenpyxlImage
+    HAS_OPENPYXL = True
+except Exception:
+    HAS_OPENPYXL = False
+
+try:
+    from pptx import Presentation
+    from pptx.util import Inches
+    HAS_PPTX = True
+except Exception:
+    Presentation = None
+    HAS_PPTX = False
+
+# Pillow is required by openpyxl Image insertion from BytesIO in some environments
+try:
+    from PIL import Image as PILImage
+    HAS_PIL = True
+except Exception:
+    HAS_PIL = False
 
 
-
-def render_chronic_issues(engine, top_n):
-    """Show chronic/recurring quality issues - DIRECT FROM DATABASE"""
-    st.markdown("### 🔧 Chronic Quality Issues")
-    st.info("Top recurring defects that need permanent solutions")
-    
-    # Query 1: Get defect counts directly from database
-    defect_query = """
-    SELECT 
-        code_description as defect,
-        COUNT(*) as count,
-        COUNT(CASE WHEN disposition = 'SCRAP' THEN 1 END) as scrap_count
-    FROM quality.clean_quality_data
-    GROUP BY code_description
-    ORDER BY count DESC
-    LIMIT %s
-    """
-    
+def _make_png_bytes(fig, width=1200, height=600):
+    """Return PNG bytes of a plotly figure where possible (kaleido or plotly write_image)."""
     try:
-        # Get defect data directly from database
-        defect_data = pd.read_sql(defect_query, engine, params=(top_n,))
-        
-        if defect_data.empty:
-            st.warning("No defect data available from database")
-            return
-        
-        # Create Pareto chart from database results
-        fig = go.Figure()
-        
-        # Bar chart for counts
-        fig.add_trace(go.Bar(
-            x=defect_data['defect'],
-            y=defect_data['count'],
-            name="Count",
-            marker_color='#3366cc',
-            text=defect_data['count'],
-            textposition='auto',
-        ))
-        
-        # Calculate cumulative percentages
-        total_defects = defect_data['count'].sum()
-        defect_data['percentage'] = (defect_data['count'] / total_defects * 100).round(1)
-        defect_data['cumulative_percentage'] = defect_data['percentage'].cumsum()
-        
-        # Line chart for cumulative percentage
-        fig.add_trace(go.Scatter(
-            x=defect_data['defect'],
-            y=defect_data['cumulative_percentage'],
-            name="Cumulative %",
-            yaxis="y2",
-            line=dict(color='#ff9900', width=3),
-            marker=dict(size=8)
-        ))
-        
-        fig.update_layout(
-            title="Most Frequent Defects - Direct from Database",
-            xaxis_title="Defect Type",
-            yaxis_title="Count",
-            yaxis2=dict(
-                title="Cumulative Percentage",
-                overlaying="y",
-                side="right",
-                range=[0, 100]
-            ),
-            xaxis_tickangle=-45,
-            hovermode="x unified",
-            height=500
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # Query 2: Get total metrics directly from database
-        metrics_query = """
-        SELECT 
-            COUNT(*) as total_defects,
-            COUNT(DISTINCT code_description) as unique_defects,
-            COUNT(CASE WHEN disposition = 'Scrap' THEN 1 END) as total_scrap
-        FROM quality.clean_quality_data
-        """
-        
-        metrics_data = pd.read_sql(metrics_query, engine)
-        
-        # Chronic issues insights
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            total_defects = metrics_data['total_defects'].iloc[0]
-            st.metric("Total Defects", f"{total_defects:,}")
-        
-        with col2:
-            if not defect_data.empty:
-                top_3_coverage = defect_data.head(3)['count'].sum() / total_defects * 100
-                st.metric("Top 3 Issues Coverage", f"{top_3_coverage:.1f}%")
-        
-        with col3:
-            unique_defects = metrics_data['unique_defects'].iloc[0]
-            st.metric("Unique Defect Types", unique_defects)
-            
-        with col4:
-            scrap_rate = (metrics_data['total_scrap'].iloc[0] / total_defects * 100).round(1)
-            st.metric("Overall Scrap Rate", f"{scrap_rate}%")
-        
-        # Actionable insights
-        st.markdown("#### 💡 Improvement Opportunities")
-        if not defect_data.empty:
-            top_issue = defect_data.iloc[0]
-            scrap_rate_top = (top_issue['scrap_count'] / top_issue['count'] * 100).round(1)
-            st.warning(f"**Priority #1**: {top_issue['defect']} - {top_issue['count']} occurrences ({top_issue['percentage']:.1f}%), Scrap Rate: {scrap_rate_top}%")
-            
-            if len(defect_data) > 1:
-                second_issue = defect_data.iloc[1]
-                scrap_rate_second = (second_issue['scrap_count'] / second_issue['count'] * 100).round(1)
-                st.info(f"**Priority #2**: {second_issue['defect']} - {second_issue['count']} occurrences, Scrap Rate: {scrap_rate_second}%")
-                
-        # Show defect details table
-        st.markdown("#### 📋 Defect Details")
-        display_data = defect_data[['defect', 'count', 'scrap_count', 'percentage']].copy()
-        display_data['scrap_rate'] = (display_data['scrap_count'] / display_data['count'] * 100).round(1)
-        st.dataframe(display_data, use_container_width=True)
-        
-    except Exception as e:
-        st.error(f"Error loading data from database: {e}")
+        # prefers kaleido-backed to_image
+        png = fig.to_image(format="png", width=width, height=height)
+        return png
+    except Exception:
+        try:
+            buf = io.BytesIO()
+            fig.write_image(buf, format="png", width=width, height=height)
+            return buf.getvalue()
+        except Exception:
+            return None
 
+
+def _create_excel_with_image(df, png_bytes):
+    """Return bytes of an Excel workbook. Try xlsxwriter first, then openpyxl.
+       If neither image-capable route is available, return a simple Excel bytes (data only) if possible.
+    """
+    out = io.BytesIO()
+
+    # Try xlsxwriter (easiest for embedding image)
+    if HAS_XLSXWRITER and png_bytes:
+        try:
+            with pd.ExcelWriter(out, engine="xlsxwriter") as writer:
+                # summary
+                summary_df = pd.DataFrame({
+                    "metric": ["Total_Defects_in_selection", "Total_Scrap_in_selection", "Overall_Scrap_Rate_%", "Rows_returned"],
+                    "value": [
+                        int(df['defect_count'].sum()),
+                        int(df['scrap_count'].sum()),
+                        float((df['scrap_count'].sum() / df['defect_count'].sum() * 100) if df['defect_count'].sum() > 0 else 0.0),
+                        len(df)
+                    ]
+                })
+                summary_df.to_excel(writer, sheet_name="Summary", index=False)
+                df.to_excel(writer, sheet_name="Top_Defects", index=False)
+                # insert image
+                workbook = writer.book
+                worksheet = writer.sheets["Top_Defects"]
+                img_buf = io.BytesIO(png_bytes)
+                # place image to the right of the table
+                worksheet.insert_image("H2", "chart.png", {"image_data": img_buf, "x_scale": 0.8, "y_scale": 0.8})
+            return out.getvalue()
+        except Exception:
+            # fall through to other methods
+            pass
+
+    # Try openpyxl path with image insertion (requires openpyxl and pillow in many setups)
+    if HAS_OPENPYXL and png_bytes and HAS_PIL:
+        try:
+            # First write sheets via pandas (openpyxl engine)
+            with pd.ExcelWriter(out, engine="openpyxl") as writer:
+                summary_df = pd.DataFrame({
+                    "metric": ["Total_Defects_in_selection", "Total_Scrap_in_selection", "Overall_Scrap_Rate_%", "Rows_returned"],
+                    "value": [
+                        int(df['defect_count'].sum()),
+                        int(df['scrap_count'].sum()),
+                        float((df['scrap_count'].sum() / df['defect_count'].sum() * 100) if df['defect_count'].sum() > 0 else 0.0),
+                        len(df)
+                    ]
+                })
+                summary_df.to_excel(writer, sheet_name="Summary", index=False)
+                df.to_excel(writer, sheet_name="Top_Defects", index=False)
+
+            # Insert image using openpyxl directly
+            out.seek(0)
+            wb = openpyxl.load_workbook(out)
+            ws = wb["Top_Defects"]
+            img = OpenpyxlImage(io.BytesIO(png_bytes))
+            # scale image so it fits reasonably
+            img.width = int(img.width * 0.75)
+            img.height = int(img.height * 0.75)
+            ws.add_image(img, "H2")
+            final = io.BytesIO()
+            wb.save(final)
+            return final.getvalue()
+        except Exception:
+            pass
+
+    # Fallback: create a data-only Excel (no image) using available engines
+    try:
+        out2 = io.BytesIO()
+        # prefer openpyxl if installed, otherwise let pandas choose default
+        engine = "openpyxl" if HAS_OPENPYXL else None
+        with pd.ExcelWriter(out2, engine=engine) as writer:
+            summary_df = pd.DataFrame({
+                "metric": ["Total_Defects_in_selection", "Total_Scrap_in_selection", "Overall_Scrap_Rate_%", "Rows_returned"],
+                "value": [
+                    int(df['defect_count'].sum()),
+                    int(df['scrap_count'].sum()),
+                    float((df['scrap_count'].sum() / df['defect_count'].sum() * 100) if df['defect_count'].sum() > 0 else 0.0),
+                    len(df)
+                ]
+            })
+            summary_df.to_excel(writer, sheet_name="Summary", index=False)
+            df.to_excel(writer, sheet_name="Top_Defects", index=False)
+        return out2.getvalue()
+    except Exception:
+        return None
+
+
+def _create_pptx_with_image(df, png_bytes):
+    """Return PPTX bytes if python-pptx is installed and png_bytes available, else None."""
+    if not HAS_PPTX or not png_bytes:
+        return None
+    try:
+        prs = Presentation()
+        # Use a simple title-and-content layout if available
+        layout = prs.slide_layouts[5] if len(prs.slide_layouts) > 5 else prs.slide_layouts[0]
+        slide = prs.slides.add_slide(layout)
+        try:
+            title = slide.shapes.title
+            if title:
+                title.text = "Chronic Quality Issues - Summary"
+        except Exception:
+            pass
+        img_buf = io.BytesIO(png_bytes)
+        # Add image (scale width to 9 inches)
+        slide.shapes.add_picture(img_buf, Inches(0.5), Inches(1.2), width=Inches(9.0))
+
+        # Add a slide with top defects text summary
+        slide2 = prs.slides.add_slide(layout)
+        try:
+            title2 = slide2.shapes.title
+            if title2:
+                title2.text = "Top Defects (selection)"
+        except Exception:
+            pass
+
+        top5 = df.head(10)[["defect", "defect_count", "scrap_count", "scrap_rate"]]
+        tx_box = slide2.shapes.add_textbox(Inches(0.5), Inches(1.2), Inches(9.0), Inches(5.0))
+        tf = tx_box.text_frame
+        for _, row in top5.iterrows():
+            p = tf.add_paragraph()
+            p.text = f"{row['defect']} — count: {int(row['defect_count']):,}, scrap: {int(row['scrap_count']):,}, rate: {row['scrap_rate']:.1f}%"
+
+        buf = io.BytesIO()
+        prs.save(buf)
+        return buf.getvalue()
+    except Exception:
+        return None
+
+
+def _make_zip_bundle(files_dict):
+    """Create an in-memory zip with provided filename->bytes mapping and return bytes."""
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for name, content in files_dict.items():
+            if content is None:
+                continue
+            zf.writestr(name, content)
+    return out.getvalue()
+
+
+def render_chronic_issues(engine, top_n=15, debug=False, sort_by='scrap_rate'):
+    """Main UI function: renders chart and produces download artifacts with robust fallbacks."""
+    st.markdown("## 🔧 Chronic Quality Issues Analysis")
+    st.info("Identifies defects with highest scrap rate impact for priority attention.")
+
+    try:
+        query = f"""
+        SELECT 
+            code_description AS defect,
+            COUNT(*) AS defect_count,
+            COUNT(CASE WHEN disposition = 'SCRAP' THEN 1 END) AS scrap_count
+        FROM quality.clean_quality_data
+        WHERE code_description IS NOT NULL AND code_description != ''
+        GROUP BY code_description
+        HAVING COUNT(*) > 0
+        ORDER BY defect_count DESC
+        LIMIT {top_n}
+        """
+        df = pd.read_sql(query, engine)
+
+        if df.empty:
+            st.warning("⚠️ No defect data available in database.")
+            return
+
+        df["defect_count"] = pd.to_numeric(df["defect_count"], errors="coerce").fillna(0).astype(int)
+        df["scrap_count"] = pd.to_numeric(df["scrap_count"], errors="coerce").fillna(0).astype(int)
+
+        df["scrap_rate"] = np.where(
+            df["defect_count"] > 0,
+            (df["scrap_count"] / df["defect_count"] * 100),
+            0.0
+        )
+        df["scrap_rate"] = df["scrap_rate"].round(1)
+        df["defect_percentage"] = (df["defect_count"] / df["defect_count"].sum() * 100).round(1)
+
+        if sort_by == 'scrap_rate':
+            df = df.sort_values("scrap_rate", ascending=False)
+        else:
+            df = df.sort_values("defect_count", ascending=False)
+
+        if debug:
+            st.write("DEBUG - df (used for chart)", df[['defect','defect_count','scrap_count','scrap_rate','defect_percentage']])
+            st.write("DEBUG - sums", {
+                "scrap_sum": int(df['scrap_count'].sum()),
+                "defect_sum": int(df['defect_count'].sum()),
+                "overall_rate": float((df['scrap_count'].sum() / df['defect_count'].sum() * 100) if df['defect_count'].sum() > 0 else 0)
+            })
+
+        # Build figure (same as before)
+        fig = go.Figure()
+        def get_scrap_rate_color(scrap_rate):
+            if scrap_rate >= 70:
+                return '#FF4444'
+            elif scrap_rate >= 40:
+                return '#FFAA44'
+            elif scrap_rate >= 20:
+                return '#44AAFF'
+            else:
+                return '#44FF88'
+
+        colors = [get_scrap_rate_color(rate) for rate in df["scrap_rate"]]
+        x_vals = list(df['scrap_rate'])
+        y_vals = list(df['defect'])
+        customdata = np.stack([df['defect_count'].astype(int),
+                               df['scrap_count'].astype(int),
+                               df['defect_percentage'].astype(float)], axis=1)
+
+        fig.add_trace(go.Bar(
+            x=x_vals,
+            y=y_vals,
+            orientation='h',
+            marker=dict(color=colors, line=dict(color='darkgray', width=1)),
+            hovertemplate=(
+                "<b>%{y}</b><br>"
+                "🔄 Scrap Rate: <b>%{x:.1f}%</b><br>"
+                "📊 Total Defects: %{customdata[0]:,}<br>"
+                "🗑️ Scrap Count: %{customdata[1]:,}<br>"
+                "📈 Frequency: %{customdata[2]:.1f}%<br>"
+                "<extra></extra>"
+            ),
+            customdata=customdata,
+            name="Scrap Rate %"
+        ))
+
+        fig.update_layout(
+            title=dict(text="🔥 Defects by Scrap Rate Impact (Highest to Lowest)", x=0.5, font=dict(size=18)),
+            xaxis=dict(title="Scrap Rate (%)", range=[0, 100], showgrid=True, gridcolor='lightgray'),
+            yaxis=dict(title="Defect Types", autorange="reversed"),
+            height=max(500, len(df) * 35),
+            template="plotly_white",
+            margin=dict(l=180, r=20, t=80, b=50),
+            hovermode="y unified",
+            showlegend=False
+        )
+
+        fig.add_vline(x=70, line_dash="dash", line_color="red", annotation_text="Critical >70%")
+        fig.add_vline(x=40, line_dash="dash", line_color="orange", annotation_text="High >40%")
+        fig.add_vline(x=20, line_dash="dash", line_color="blue", annotation_text="Medium >20%")
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        # -----------------------
+        # Robust report creation & downloads
+        # -----------------------
+        st.markdown("### 📥 Downloadable Reports")
+
+        # Build simple summary and CSV
+        summary = {
+            "Total_Defects_in_selection": int(df['defect_count'].sum()),
+            "Total_Scrap_in_selection": int(df['scrap_count'].sum()),
+            "Overall_Scrap_Rate_%": float((df['scrap_count'].sum() / df['defect_count'].sum() * 100) if df['defect_count'].sum() > 0 else 0.0),
+            "Rows_returned": int(len(df))
+        }
+        csv_bytes = df.to_csv(index=False).encode('utf-8')
+
+        # PNG of the chart (try to create; may require kaleido)
+        png_bytes = _make_png_bytes(fig, width=1200, height=max(400, len(df) * 35))
+
+        # Excel bytes (try xlsxwriter -> openpyxl -> data-only)
+        excel_bytes = _create_excel_with_image(df, png_bytes)
+
+        # PPTX bytes (if python-pptx + png available)
+        pptx_bytes = _create_pptx_with_image(df, png_bytes)
+
+        # If both excel and pptx are missing, create a ZIP bundle with CSV + PNG (if any)
+        files = {
+            "top_defects.csv": csv_bytes,
+            "top_defects_chart.png": png_bytes,
+            "top_defects_report.xlsx": excel_bytes,
+            "top_defects_summary.pptx": pptx_bytes
+        }
+        zip_bytes = None
+        # If at least one of excel/pptx/png exists, also produce zip for convenience
+        if any(v is not None for v in [excel_bytes, pptx_bytes, png_bytes, csv_bytes]):
+            zip_bytes = _make_zip_bundle(files)
+
+        # Display helpful notes about available exports and missing deps
+        dep_msgs = []
+        if not HAS_XLSXWRITER and not HAS_OPENPYXL:
+            dep_msgs.append("Excel image embedding unavailable (install XlsxWriter or openpyxl + pillow to embed chart).")
+        if not png_bytes:
+            dep_msgs.append("PNG export unavailable (install 'kaleido' or enable plotly image export).")
+        if not HAS_PPTX:
+            dep_msgs.append("PPTX creation unavailable (install 'python-pptx').")
+        if dep_msgs:
+            for m in dep_msgs:
+                st.info(m)
+
+        # Render download buttons in columns
+        c1, c2, c3, c4 = st.columns(4)
+        with c1:
+            st.download_button("CSV - Top Defects", data=csv_bytes, file_name="top_defects.csv", mime="text/csv")
+        with c2:
+            if excel_bytes:
+                st.download_button("Excel (report)", data=excel_bytes, file_name="top_defects_report.xlsx",
+                                   mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            else:
+                st.button("Excel (report) - unavailable")
+        with c3:
+            if png_bytes:
+                st.download_button("PNG Chart", data=png_bytes, file_name="top_defects_chart.png", mime="image/png")
+            else:
+                st.button("PNG Chart - unavailable")
+        with c4:
+            if pptx_bytes:
+                st.download_button("PPTX (presentation)", data=pptx_bytes, file_name="top_defects_summary.pptx",
+                                   mime="application/vnd.openxmlformats-officedocument.presentationml.presentation")
+            else:
+                st.button("PPTX - unavailable")
+
+        # Provide a ZIP with everything that was produced for easy sharing
+        if zip_bytes:
+            st.download_button("ZIP - All artifacts", data=zip_bytes, file_name="top_defects_bundle.zip", mime="application/zip")
+
+    except Exception as e:
+        st.error(f"❌ Error loading chronic issues data: {str(e)}")
+        st.info("Please check your database connection and ensure the 'quality.clean_quality_data' table exists.")
 
 def render_operator_trends(engine):
     """Show operator performance trends over time using monthly aggregation"""
@@ -299,7 +543,6 @@ def render_operator_trends(engine):
     )
     kpi['scrap_rate (%)'] = (kpi['scrap_count'] / kpi['defect_count'] * 100).round(1)
     st.dataframe(kpi.sort_values('defect_count', ascending=False))
-
 
 def render_performance_trends(engine):
     """Dynamic performance trends dashboard (Daily, Weekly, Monthly)"""
@@ -440,6 +683,7 @@ def render_performance_trends(engine):
 
     except Exception as e:
         st.error(f"Error loading {view.lower()} performance data: {e}")
+
 def render_advanced_analysis(engine):
     """New advanced analyses from SQL queries"""
     st.markdown("### 🔍 Advanced Quality Analysis")

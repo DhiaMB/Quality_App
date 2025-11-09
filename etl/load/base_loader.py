@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from etl.utils.logger import logger
+from utils.logger import logger
 
 class BaseLoader(ABC):
     """Base class for data loading"""

@@ -1,7 +1,7 @@
-from etl.extract.db_extractor import DatabaseExtractor
-from etl.transform.quality_transformer import QualityTransformer
-from etl.load.db_loader import DatabaseLoader
-from etl.utils.logger import logger
+from extract.db_extractor import DatabaseExtractor
+from transform.quality_transformer import QualityTransformer
+from load.db_loader import DatabaseLoader
+from utils.logger import logger
 
 class ETLOrchestrator:
     """Orchestrate the complete ETL process"""

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import pandas as pd
-from etl.utils.logger import logger
+from utils.logger import logger
 
 class BaseExtractor(ABC):
     """Base class for data extraction"""

@@ -63,7 +63,7 @@ def init_database():
                 machine_no VARCHAR(50),
                 who_made_it VARCHAR(100),          
                 defect_comment TEXT,
-                repair_comment TEXT,
+                repair_comment TEXT,s
                 data_quality_score INTEGER,
                 load_date DATE,
                 load_timestamp TIMESTAMP,

@@ -1,0 +1,10 @@
+2025-11-09 06:49:14,232 - quality_etl - INFO - === Starting ETL Pipeline ===
+2025-11-09 06:49:14,232 - quality_etl - INFO - Phase 1: Extraction
+2025-11-09 06:49:14,232 - quality_etl - INFO - Starting database extraction
+2025-11-09 06:49:14,551 - quality_etl - INFO - Executing incremental extraction query: 
+                SELECT * FROM lpb_quality_data 
+                WHERE date > %s
+                ORDER BY date
+            
+2025-11-09 06:49:14,828 - quality_etl - INFO - No new records to extract
+2025-11-09 06:49:14,828 - quality_etl - INFO - No new data to process
